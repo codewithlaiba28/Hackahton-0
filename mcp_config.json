@@ -1,0 +1,53 @@
+{
+  "servers": [
+    {
+      "name": "email",
+      "command": "node",
+      "args": ["/path/to/email-mcp/index.js"],
+      "env": {
+        "GMAIL_CREDENTIALS": "/path/to/credentials.json"
+      }
+    },
+    {
+      "name": "browser",
+      "command": "npx",
+      "args": ["@anthropic/browser-mcp"],
+      "env": {
+        "HEADLESS": "true"
+      }
+    },
+    {
+      "name": "filesystem",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/Vault"],
+      "env": {}
+    },
+    {
+      "name": "calendar",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-calendar"],
+      "env": {
+        "GOOGLE_CALENDAR_CREDENTIALS": "/path/to/calendar-credentials.json"
+      }
+    }
+  ],
+  "human_in_the_loop": {
+    "enabled": true,
+    "approval_folder": "Vault/Pending_Approval",
+    "approved_folder": "Vault/Approved",
+    "rejected_folder": "Vault/Rejected",
+    "sensitive_actions": [
+      "payment",
+      "email_send",
+      "social_post",
+      "file_upload",
+      "external_api_call"
+    ],
+    "approval_timeout_hours": 24
+  },
+  "logging": {
+    "level": "info",
+    "file": "Logs/mcp_activity.log",
+    "audit_trail": true
+  }
+}

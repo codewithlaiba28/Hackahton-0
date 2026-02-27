@@ -1,123 +1,304 @@
-# 🤖 Personal AI Employee - BRONZE TIER
+# 🤖 Personal AI Employee - SILVER TIER
 
-A local-first, agent-driven automation system that acts as your digital full-time employee (FTE). This is the **BRONZE TIER** implementation of the Personal AI Employee Hackathon.
+A local-first, agent-driven automation system that acts as your digital full-time employee (FTE). This is the **SILVER TIER** implementation of the Personal AI Employee Hackathon.
 
-## 📋 What Was Built
+---
 
-This BRONZE TIER implementation includes:
+## 📋 What's New in SILVER TIER
 
-- ✅ **Obsidian Vault** with Dashboard.md and Company_Handbook.md
-- ✅ **Folder Structure**: `/Inbox`, `/Needs_Action`, `/Done`, `/Skills`
-- ✅ **Base Watcher**: Abstract base class for all watcher scripts
-- ✅ **Gmail Watcher**: Monitors Gmail for important unread messages
-- ✅ **Agent Skills Documentation**: SKILL.md documenting all capabilities
+This SILVER TIER implementation includes **all BRONZE features** plus:
+
+- ✅ **WhatsApp Watcher** - Monitors WhatsApp Web for urgent messages
+- ✅ **File System Watcher** - Watches drop folder for new files
+- ✅ **Qwen Reasoner** - AI reasoning loop that creates action plans
+- ✅ **Human-in-the-Loop (HITL)** - Approval workflow for sensitive actions
+- ✅ **LinkedIn Draft Generator** - Creates social media post drafts
+- ✅ **MCP Configuration** - Ready for external action servers
+- ✅ **Cron Scheduling** - Automated task scheduling
+
+---
 
 ## 🏗️ Architecture
 
 ```
-Perception (Watchers) → Reasoning (You/Qwen) → Action (MCP Servers)
+┌─────────────────────────────────────────────────────────────────┐
+│                    PERCEPTION LAYER (Watchers)                   │
+├─────────────────┬─────────────────┬─────────────────────────────┤
+│  Gmail Watcher  │  WhatsApp Watcher│  File System Watcher        │
+│  (120s interval)│  (30s interval)  │  (Real-time)                │
+└────────┬────────┴────────┬─────────┴────────────┬────────────────┘
+         │                 │                       │
+         ▼                 ▼                       ▼
+         └─────────────────┴───────────────────────┘
+                          │
+                          ▼
+              /Vault/Needs_Action/ Folder
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    REASONING LAYER (Qwen)                        │
+│                                                                  │
+│  1. Read task files from Needs_Action                           │
+│  2. Analyze content and determine actions                        │
+│  3. Create Plan.md with step-by-step checklist                   │
+│  4. Flag sensitive actions for approval                          │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+              /Vault/Plans/ Folder
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    ACTION LAYER (HITL + MCP)                     │
+│                                                                  │
+│  ┌─────────────────┐     ┌──────────────┐     ┌──────────────┐ │
+│  │ Pending Approval│────▶│   Approved   │────▶│   Execute    │ │
+│  │   (Human)       │     │   (Move)     │     │   (MCP)      │ │
+│  └─────────────────┘     └──────────────┘     └──────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-The Watcher scripts run continuously in the background, monitoring external systems (Gmail, WhatsApp, etc.) and creating actionable `.md` files in the `Needs_Action` folder for processing.
+---
 
-## 📁 Folder Structure
+## 📁 Complete Folder Structure
 
 ```
 Hackahton-0/
 ├── Vault/
-│   ├── Inbox/              # Raw incoming items
-│   ├── Needs_Action/       # Items requiring attention
-│   ├── Done/               # Completed tasks
-│   ├── Skills/             # Agent skills documentation
-│   ├── Dashboard.md        # Real-time status overview
-│   └── Company_Handbook.md # Rules of engagement
-├── base_watcher.py         # Base class for all watchers
-├── gmail_watcher.py        # Gmail monitoring script
-└── README.md               # This file
+│   ├── Inbox/                    # Drop folder for files
+│   ├── Needs_Action/             # Items requiring attention
+│   ├── Done/                     # Completed tasks
+│   ├── Plans/                    # Action plans and drafts
+│   │   ├── PLAN_*.md             # Auto-generated plans
+│   │   └── LINKEDIN_draft_*.md   # Social media drafts
+│   ├── Pending_Approval/         # Awaiting human approval
+│   ├── Approved/                 # Approved actions
+│   ├── Rejected/                 # Rejected actions
+│   ├── Skills/
+│   │   └── SKILL.md              # Agent skills documentation
+│   ├── Dashboard.md              # Real-time status overview
+│   └── Company_Handbook.md       # Rules of engagement
+├── Watchers (Bronze + Silver):
+│   ├── base_watcher.py           # Base class for all watchers
+│   ├── gmail_watcher.py          # Gmail monitoring
+│   ├── whatsapp_watcher.py       # WhatsApp monitoring (NEW)
+│   └── filesystem_watcher.py     # File drop monitoring (NEW)
+├── Reasoning:
+│   └── qwen_reasoner.py          # AI reasoning loop (NEW)
+├── Actions:
+│   └── linkedin_draft.py         # LinkedIn draft generator (NEW)
+├── Configuration:
+│   ├── mcp_config.json           # MCP server config (NEW)
+│   ├── cron_setup.md             # Scheduling guide (NEW)
+│   └── credentials.json          # OAuth credentials
+│   └── token.json                # Auth token
+├── Documentation:
+│   ├── README.md                 # This file
+│   ├── SETUP_QUICK.md            # Quick setup guide
+│   └── BRONZE_CERTIFICATE.md     # Bronze tier completion
+└── Logs/                         # Activity logs (auto-created)
 ```
 
-### Folder Descriptions
-
-| Folder | Purpose |
-|--------|---------|
-| `/Inbox` | Raw incoming items before processing |
-| `/Needs_Action` | Items that require attention or action |
-| `/Done` | Completed and archived tasks |
-| `/Skills` | Agent skills documentation (SKILL.md files) |
+---
 
 ## 🚀 How to Run the Scripts
 
 ### Prerequisites
 
-Ensure you have the following installed:
-- Python 3.13 or higher
-- Google Gmail API credentials (for Gmail watcher)
-
-### Install Required Packages
-
 ```bash
+# Install all required packages
 pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+pip install playwright
+pip install watchdog
 ```
 
-### Running the Watchers
+### Step 1: Authorize Gmail (If Not Done)
 
-**1. Run the Base Watcher (Template):**
 ```bash
-python base_watcher.py
+cd C:\Code-journy\Quator-4\Hackahton-0
+python auth_setup.py
 ```
-*Note: This is an abstract class and cannot be run directly. Use it as a template.*
 
-**2. Run the Gmail Watcher:**
+### Step 2: Start Watchers
+
+**Option A: Run Individual Watchers**
+
 ```bash
+# Gmail Watcher (runs continuously)
 python gmail_watcher.py
+
+# WhatsApp Watcher (in new terminal)
+python whatsapp_watcher.py
+
+# File System Watcher (in new terminal)
+python filesystem_watcher.py
 ```
 
-*Note: Gmail Watcher requires Google API credentials setup. See below.*
+**Option B: Run All Watchers**
 
-### Gmail API Setup
+Create `start_all_watchers.bat`:
+```batch
+@echo off
+start cmd /k "cd /d %~dp0 && python gmail_watcher.py"
+start cmd /k "cd /d %~dp0 && python whatsapp_watcher.py"
+start cmd /k "cd /d %~dp0 && python filesystem_watcher.py"
+```
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Enable the Gmail API
-4. Create OAuth 2.0 credentials
-5. Download `credentials.json` to your project directory
-6. Update `gmail_watcher.py` with your credentials path
+### Step 3: Start Reasoning Loop
 
-## 📖 Using Your AI Employee
+```bash
+# Qwen Reasoner (monitors Needs_Action folder)
+python qwen_reasoner.py
+```
 
-### Daily Workflow
+### Step 4: Generate LinkedIn Drafts
 
-1. **Morning**: Check `Dashboard.md` for overview
-2. **Throughout Day**: Watchers create files in `Needs_Action/`
-3. **Processing**: Review items in `Needs_Action/` and take action
-4. **Completion**: Move processed items to `Done/`
+```bash
+# Create a new LinkedIn post draft
+python linkedin_draft.py
+```
 
-### Company Handbook Rules
+---
 
-Key rules defined in `Company_Handbook.md`:
-- ✉️ Reply to emails within 24 hours
-- 💰 Flag any payment over $500 for approval
-- 💬 Always be polite on WhatsApp
-- 🔒 Never share sensitive information
+## 🔄 Human-in-the-Loop (HITL) Approval Workflow
+
+### How It Works
+
+1. **Sensitive Action Detected** → Qwen Reasoner creates approval file
+2. **File Saved** → `/Vault/Pending_Approval/APPROVAL_*.md`
+3. **Human Reviews** → Opens file and reviews details
+4. **To Approve** → Move file to `/Vault/Approved/`
+5. **To Reject** → Move file to `/Vault/Rejected/`
+6. **System Acts** → Processes approved actions automatically
+
+### Approval File Example
+
+```markdown
+---
+type: approval_request
+action: payment
+amount: $750.00
+recipient: Client ABC
+reason: Invoice #12345
+created: 2026-02-27T14:30:00
+status: pending
+---
+
+# Approval Required
+
+## Payment Details
+- **Amount:** $750.00
+- **To:** Client ABC
+- **Reference:** Invoice #12345
+
+## Why Approval is Required
+Payment over $500 threshold
+
+## To Approve
+Move this file to /Vault/Approved folder
+
+## To Reject
+Move this file to /Vault/Rejected folder
+```
+
+### Approval Workflow Diagram
+
+```
+┌──────────────────────┐
+│  Sensitive Action    │
+│  Detected by Qwen    │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│  Create Approval     │
+│  File in Pending/    │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│  Human Reviews       │
+│  File Contents       │
+└──────────┬───────────┘
+           │
+     ┌─────┴─────┐
+     │           │
+     ▼           ▼
+┌─────────┐ ┌──────────┐
+│ Approve │ │  Reject  │
+│ Move to │ │  Move to │
+│Approved/│ │Rejected/ │
+└────┬────┘ └────┬─────┘
+     │           │
+     ▼           ▼
+┌─────────┐ ┌──────────┐
+│ Execute │ │  Log &   │
+│  Action │ │  Notify  │
+└─────────┘ └──────────┘
+```
+
+---
+
+## 📅 Scheduled Tasks (Cron)
+
+### Quick Setup
+
+See `cron_setup.md` for detailed instructions.
+
+### Default Schedule
+
+| Task | Schedule | Command |
+|------|----------|---------|
+| Daily Briefing | 8:00 AM | `python qwen_reasoner.py` |
+| Weekly Audit | Sunday 11 PM | `python linkedin_draft.py` |
+| Gmail Check | Every 2 min | `python gmail_watcher.py` (continuous) |
+| WhatsApp Check | Every 30 sec | `python whatsapp_watcher.py` (continuous) |
+
+### Windows Task Scheduler
+
+1. Open Task Scheduler
+2. Create Basic Task
+3. Set trigger (e.g., Daily at 8:00 AM)
+4. Action: `python` with args `"C:\Code-journy\Quator-4\Hackahton-0\qwen_reasoner.py"`
+5. Start in: `C:\Code-journy\Quator-4\Hackahton-0`
+
+---
+
+## 📊 SILVER TIER Features Checklist
+
+### Watchers (Perception)
+- [x] Gmail Watcher - Monitors unread emails
+- [x] WhatsApp Watcher - Monitors urgent messages
+- [x] File System Watcher - Monitors drop folder
+
+### Reasoning
+- [x] Qwen Reasoner - Analyzes tasks
+- [x] Plan Generation - Creates Plan.md files
+- [x] Approval Detection - Flags sensitive actions
+
+### Actions
+- [x] HITL Approval Workflow - Human-in-the-loop
+- [x] LinkedIn Draft Generator - Social media drafts
+- [x] MCP Configuration - Ready for external actions
+
+### Scheduling
+- [x] Cron Setup Guide - Task scheduling
+- [x] Windows Task Scheduler - Windows automation
+- [x] Systemd Service - Linux service
+
+---
 
 ## 🛠️ Extending Your AI Employee
 
 ### Adding a New Watcher
 
-1. Create a new Python file (e.g., `whatsapp_watcher.py`)
-2. Inherit from `BaseWatcher` class
-3. Implement `check_for_updates()` and `create_action_file()`
-4. Run the new watcher script
-
-### Example: File System Watcher
-
 ```python
 from base_watcher import BaseWatcher
 from pathlib import Path
 
-class FileSystemWatcher(BaseWatcher):
+class MyNewWatcher(BaseWatcher):
     def check_for_updates(self) -> list:
-        # Your monitoring logic here
+        # Your monitoring logic
         return []
     
     def create_action_file(self, item) -> Path:
@@ -125,33 +306,51 @@ class FileSystemWatcher(BaseWatcher):
         pass
 ```
 
-## 📊 BRONZE TIER Checklist
+### Adding a New Action
 
-- [x] Obsidian vault with Dashboard.md
-- [x] Company_Handbook.md with rules
-- [x] One working Watcher script (Gmail)
-- [x] Basic folder structure: /Inbox, /Needs_Action, /Done
-- [x] File read/write capability verified
+1. Create script in project root
+2. Implement action logic
+3. Add to Qwen Reasoner's action list
+4. Configure in `mcp_config.json`
 
-## 🔜 Next Steps (SILVER TIER)
+---
 
-To advance to SILVER TIER, add:
-- [ ] WhatsApp Watcher
-- [ ] MCP server for sending emails
-- [ ] Human-in-the-loop approval workflow
-- [ ] Scheduled tasks via cron/Task Scheduler
-- [ ] Plan.md creation logic
+## 🔜 Next Steps (GOLD TIER)
+
+To advance to GOLD TIER, add:
+- [ ] Odoo accounting integration via MCP
+- [ ] Facebook/Instagram posting
+- [ ] Twitter (X) integration
+- [ ] Multiple MCP servers
+- [ ] Weekly CEO Briefing generation
+- [ ] Error recovery and graceful degradation
+- [ ] Comprehensive audit logging
+- [ ] Ralph Wiggum persistence loop
+
+---
 
 ## 📝 License
 
 This project is part of the Personal AI Employee Hackathon 2026.
+
+---
 
 ## 🆘 Support
 
 For questions or issues:
 - Check `Company_Handbook.md` for rules
 - Review `Vault/Skills/SKILL.md` for capabilities
+- Check `cron_setup.md` for scheduling help
 - Join Wednesday Research Meeting on Zoom
+
+---
+
+## 📈 Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.0 (Silver) | 2026-02-27 | Added WhatsApp, File watchers, Reasoning, HITL |
+| 1.0 (Bronze) | 2026-02-27 | Initial Gmail watcher, Dashboard, Handbook |
 
 ---
 
