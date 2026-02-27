@@ -52,3 +52,6 @@ desktop.ini
 # Project specific
 *.tmp
 *.temp
+linkedin_session/
+whatsapp_session/
+Vault/

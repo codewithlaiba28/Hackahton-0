@@ -1,9 +1,0 @@
-INVOICE #12345
-================
-Date: 2026-02-27
-Client: ABC Company
-Amount: $500.00
-Description: Web Development Services
-
-Payment due within 30 days.
-Thank you for your business!
