@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 WhatsApp QR Code Setup - One-time authentication
 
@@ -14,10 +15,17 @@ Usage: python whatsapp_setup_qr.py
 from playwright.sync_api import sync_playwright
 from pathlib import Path
 import time
+import sys
+import os
+
+# Fix Windows console encoding
+if sys.platform == 'win32':
+    os.system('chcp 65001 > nul')
+    sys.stdout.reconfigure(encoding='utf-8')
 
 def main():
     session_path = Path(__file__).parent / 'whatsapp_session'
-    
+
     print("=" * 60)
     print("WhatsApp QR Code Setup")
     print("=" * 60)
@@ -28,7 +36,7 @@ def main():
     print("1. Browser will open automatically")
     print("2. WhatsApp Web QR code will appear")
     print("3. Open WhatsApp on your phone")
-    print("4. Go to: Settings → Linked Devices → Link a Device")
+    print("4. Go to: Settings > Linked Devices > Link a Device")
     print("5. Scan the QR code in the browser")
     print()
     print("Waiting 120 seconds for you to scan the QR code...")
