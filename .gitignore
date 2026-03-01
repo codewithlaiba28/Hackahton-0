@@ -1,13 +1,25 @@
+# ═══════════════════════════════════════════════════════════
+# Personal AI Employee - .gitignore
+# Hackathon 0 - Gold Tier
+# ═══════════════════════════════════════════════════════════
+
 # Environment variables
 .env
 .env.local
 .env.*.local
+*.env
 
-# OAuth Credentials
+# OAuth Credentials (CRITICAL - Never commit these)
 credentials.json
 token.json
 *credentials*.json
 *token*.json
+*_credentials.json
+*_token.json
+
+# Odoo Configuration
+Vault/Accounting/ODOO_CONFIG.env
+Vault/Accounting/*.env
 
 # Python
 __pycache__/
@@ -33,9 +45,45 @@ wheels/
 *.manifest
 *.spec
 
-# Logs
+# Logs and Audit Files
 Logs/
 *.log
+Vault/Logs/*.json
+Vault/Logs/*.md
+
+# Session Folders (Browser Automation)
+linkedin_session/
+whatsapp_session/
+whatsapp_session_reply/
+twitter_session/
+facebook_session/
+instagram_session/
+social_session/
+gold_test_session/
+
+# Vault - Exclude sensitive data, include structure
+Vault/
+!Vault/.gitkeep
+!Vault/Inbox/.gitkeep
+!Vault/Needs_Action/.gitkeep
+!Vault/Done/.gitkeep
+!Vault/Plans/.gitkeep
+!Vault/Pending_Approval/.gitkeep
+!Vault/Approved/.gitkeep
+!Vault/Rejected/.gitkeep
+!Vault/Skills/.gitkeep
+!Vault/Briefings/.gitkeep
+!Vault/Accounting/.gitkeep
+!Vault/Images/.gitkeep
+
+# Screenshots and Debug Files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+!images/
+!Images/
 
 # IDE
 .vscode/
@@ -43,15 +91,43 @@ Logs/
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
 
 # Project specific
 *.tmp
 *.temp
-linkedin_session/
-whatsapp_session/
-Vault/
+*.cache
+*.pid
+*.lock
+
+# Test files
+test_*.py
+*_test.py
+!test_read_write.py
+
+# Temporary debug files
+fb_*.png
+twitter_*.png
+instagram_*.png
+linkedin_*.png
+before_*.png
+after_*.png
+share_*.png
+whatsapp_*.png
+
+# MCP Server logs
+mcp_logs/
+
+# Playwright
+.playwright/

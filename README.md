@@ -110,6 +110,7 @@ Hackahton-0/
 pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
 pip install playwright
 pip install watchdog
+pip install requests
 ```
 
 ---
@@ -131,6 +132,10 @@ python whatsapp_setup_qr.py
 # Step 4: Verify all components are working
 python test_gmail.py
 python test_whatsapp_simple.py
+
+# Step 5: Check tier compliance
+python check_tier_compliance.py   # Bronze + Silver
+python check_gold_compliance.py   # Gold Tier
 ```
 
 ---
@@ -228,240 +233,239 @@ python qwen_reasoner.py
 
 ---
 
-## ✉️ Reply Commands (Action Layer)
+## 🥇 GOLD TIER COMMANDS
 
-### Email Reply
+### 📊 CEO Briefing Generator
 
 ```bash
-# Send all approved email replies
-python email_reply.py
+# Generate weekly CEO briefing (last 7 days)
+python ceo_briefing.py Vault 7
+
+# Generate briefing for last 30 days
+python ceo_briefing.py Vault 30
 ```
 
-**What it does:**
-- Scans `Vault/Approved/` folder for approved email replies
-- Sends emails via Gmail API
-- Moves sent files to `Vault/Done/`
-- Logs all actions
+**Output:** `Vault/Briefings/YYYY-MM-DD_Monday_Briefing.md`
 
-**Workflow:**
-1. Email arrives → `gmail_watcher.py` → `Needs_Action/`
-2. `qwen_reasoner.py` → Creates reply draft in `Pending_Approval/`
-3. Human reviews and moves to `Approved/`
-4. `email_reply.py` → Sends email → Moves to `Done/`
+**What you'll see:**
+- Executive Summary
+- Revenue (This Week, MTD, Trend)
+- Completed Tasks
+- Bottlenecks (with delay analysis)
+- Proactive Suggestions (cost optimization, subscription audit)
+- Upcoming Deadlines
 
 ---
 
-### WhatsApp Reply
+### 🔄 Ralph Wiggum Persistence Loop
 
 ```bash
-# Send all approved WhatsApp replies
-python whatsapp_reply.py
-
-# Test WhatsApp login status
-python test_whatsapp_login.py
+# Test Ralph Wiggum loop
+python ralph_wiggum.py Vault
 ```
 
 **What it does:**
-- Scans `Vault/Approved/` folder for approved WhatsApp replies
-- Opens WhatsApp Web in browser
-- Searches for contact and sends message
-- Moves sent files to `Vault/Done/`
-- Saves debug screenshot on failure
+- Keeps AI working until multi-step tasks complete
+- File-movement based completion detection
+- Auto-escalates to human when stuck
 
-**Workflow:**
-1. WhatsApp message → `whatsapp_watcher.py` → `Needs_Action/`
-2. `qwen_reasoner.py` → Creates reply draft in `Pending_Approval/`
-3. Human reviews, edits message, moves to `Approved/`
-4. `whatsapp_reply.py` → Sends message → Moves to `Done/`
+**Output:** Task files move from `In_Progress/` → `Done/`
 
 ---
 
-## 💼 LinkedIn Commands (Social Media Layer)
-
-### LinkedIn Draft Generator
+### 🛡️ Error Recovery & Audit Logging
 
 ```bash
-# Generate LinkedIn post draft from Dashboard
-python linkedin_draft.py
+# Test audit logger
+python audit_logger.py Vault
 
-# Interactive LinkedIn post creator
-python linkedin_interactive.py
+# Test error handler
+python error_handler.py Vault
 
-# LinkedIn Silver Tier demo
-python linkedin_silver_demo.py
+# Test retry handler
+python retry_handler.py
 ```
 
-**What it does:**
-- Reads business metrics from `Vault/Dashboard.md`
-- Generates professional LinkedIn post drafts
-- Saves drafts in `Vault/Plans/LINKEDIN_draft_*.md`
-- Includes hashtags and engagement hooks
-
-**Output:** `Vault/Plans/LINKEDIN_draft_<timestamp>.md`
+**What you'll see:**
+- `Vault/Logs/YYYY-MM-DD.json` - JSON audit logs
+- All actions logged with timestamps
+- 90-day retention policy
 
 ---
 
-### LinkedIn Auto-Poster
+### 📱 Social Media Posting (Gold Tier)
 
+#### **Twitter (X)**
 ```bash
-# Post all approved LinkedIn drafts
-python linkedin_poster.py
-
-# Post with custom text
-python linkedin_poster.py --text "Your post content here"
+# Post text only
+python twitter_poster.py --text "Your tweet here"
 
 # Post with image
-python linkedin_poster.py --text "Your post" --image "path/to/image.png"
+python twitter_poster.py --text "Tweet" --image "path/to/image.png"
 
-# Edit draft before posting
+# Post all approved drafts
+python twitter_poster.py
+
+# With edit mode
+python twitter_poster.py --edit
+```
+
+**Output:** Tweet posted to Twitter.com, file moved to `Vault/Done/`
+
+---
+
+#### **Facebook**
+```bash
+# Post text only
+python facebook_poster.py --text "Your Facebook post"
+
+# Post with image
+python facebook_poster.py --text "Post" --image "path/to/image.jpg"
+
+# Post all approved drafts
+python facebook_poster.py
+```
+
+**Output:** Post on Facebook, file moved to `Vault/Done/`
+
+---
+
+#### **Instagram**
+```bash
+# Post with image (REQUIRED)
+python instagram_poster.py --text "Caption here" --image "path/to/image.jpg"
+
+# Post all approved drafts
+python instagram_poster.py --image "path/to/image.jpg"
+```
+
+**Output:** Instagram post with caption + image, file moved to `Vault/Done/`
+
+---
+
+#### **LinkedIn**
+```bash
+# Post text only
+python linkedin_poster.py --text "Professional update"
+
+# Post with image
+python linkedin_poster.py --text "Update" --image "path/to/image.png"
+
+# Post all approved drafts
+python linkedin_poster.py
+
+# With edit mode
 python linkedin_poster.py --edit
 ```
 
-**What it does:**
-- Scans `Vault/Approved/` for approved LinkedIn posts
-- Opens LinkedIn in browser
-- Creates new post with text and optional image
-- Logs all posted content
-- Moves posted files to `Vault/Done/`
-
-**Workflow:**
-1. `linkedin_draft.py` → Creates draft in `Plans/`
-2. Human reviews and moves to `Approved/`
-3. `linkedin_poster.py` → Posts to LinkedIn → Moves to `Done/`
+**Output:** LinkedIn post, file moved to `Vault/Done/`
 
 ---
 
-## 🔧 Utility Commands
-
-### Test Scripts
+### 💰 Odoo Accounting Integration
 
 ```bash
-# Test Gmail API connection
-python test_gmail.py
+# Create invoice
+python odoo_mcp.py --action create_invoice --customer "Client Name" --amount 1000
 
-# Test live email capture
-python test_live_email.py
+# Get financial report
+python odoo_mcp.py --action get_report
 
-# Test WhatsApp connection
-python test_whatsapp_simple.py
-
-# Test WhatsApp login status
-python test_whatsapp_login.py
-
-# Test vault read/write
-python test_read_write.py
+# Record payment
+python odoo_mcp.py --action record_payment --amount 500
 ```
 
-### Debug Scripts
-
-```bash
-# Debug WhatsApp Web selectors
-python whatsapp_debug.py
+**Environment Variables:**
 ```
+ODOO_URL=http://localhost:8069
+ODOO_DB=hackathon
+ODOO_USERNAME=antigravityuser18@gmail.com
+ODOO_PASSWORD=Laiba@28july2007
+```
+
+**Output:**
+- Invoice created in Odoo (Draft status)
+- Saved to `Vault/Accounting/Invoices/INVOICE_<id>.md`
+- Logged to `Vault/Logs/YYYY-MM-DD.json`
 
 ---
 
-## 🔄 Complete Automation Setup
+### ✅ Compliance Checking
 
-### Start All Watchers (Windows Batch File)
+```bash
+# Check Bronze + Silver compliance
+python check_tier_compliance.py
 
-Create `start_all.bat`:
-```batch
-@echo off
-echo Starting Personal AI Employee...
-echo.
-start cmd /k "cd /d %~dp0 && echo === Gmail Watcher === && python gmail_watcher.py"
-start cmd /k "cd /d %~dp0 && echo === WhatsApp Watcher === && python whatsapp_watcher.py"
-start cmd /k "cd /d %~dp0 && echo === File Watcher === && python filesystem_watcher.py"
-start cmd /k "cd /d %~dp0 && echo === Qwen Reasoner === && python qwen_reasoner.py"
-echo All watchers started!
+# Check Gold Tier compliance
+python check_gold_compliance.py
 ```
 
-### Start All Watchers (PowerShell)
-
-Create `start_all.ps1`:
-```powershell
-Start-Process python -ArgumentList "gmail_watcher.py" -WindowStyle Normal
-Start-Process python -ArgumentList "whatsapp_watcher.py" -WindowStyle Normal
-Start-Process python -ArgumentList "filesystem_watcher.py" -WindowStyle Normal
-Start-Process python -ArgumentList "qwen_reasoner.py" -WindowStyle Normal
-```
+**Output:**
+- Tier-by-tier compliance report
+- Pass/Fail for each requirement
+- Overall score (e.g., 24/24 = 100%)
 
 ---
 
-## 📅 Scheduled Task Commands
+### 📋 GOLD TIER QUICK REFERENCE TABLE
 
-### Daily Briefing (8:00 AM)
-
-```bash
-python qwen_reasoner.py
-```
-
-### Weekly Audit (Sunday 11:00 PM)
-
-```bash
-python linkedin_draft.py
-```
-
-### WhatsApp Session Refresh (If Needed)
-
-```bash
-python whatsapp_setup_qr.py
-```
-
-See `cron_setup.md` for detailed scheduling instructions.
+| Command | What It Does | Output Location |
+|---------|--------------|-----------------|
+| `python ceo_briefing.py Vault 7` | Generate weekly CEO briefing | `Vault/Briefings/` |
+| `python ralph_wiggum.py Vault` | Test persistence loop | `Vault/Done/` |
+| `python audit_logger.py Vault` | Test audit logging | `Vault/Logs/` |
+| `python error_handler.py Vault` | Test error recovery | Console output |
+| `python retry_handler.py` | Test retry logic | Console output |
+| `python twitter_poster.py` | Post to Twitter | Twitter.com + `Vault/Done/` |
+| `python facebook_poster.py` | Post to Facebook | Facebook.com + `Vault/Done/` |
+| `python instagram_poster.py --image X` | Post to Instagram | Instagram.com + `Vault/Done/` |
+| `python linkedin_poster.py` | Post to LinkedIn | LinkedIn.com + `Vault/Done/` |
+| `python odoo_mcp.py --action create_invoice` | Create invoice in Odoo | Odoo + `Vault/Accounting/` |
+| `python check_gold_compliance.py` | Check Gold Tier status | Console report |
 
 ---
 
-## 🎯 Command Quick Reference Table
+### 🎯 GOLD TIER WORKFLOW EXAMPLES
 
-| Command | Purpose | Runs Continuously |
-|---------|---------|-------------------|
-| `python gmail_watcher.py` | Monitor Gmail for new emails | ✅ Yes |
-| `python whatsapp_watcher.py` | Monitor WhatsApp for messages | ✅ Yes |
-| `python filesystem_watcher.py` | Monitor Inbox folder for files | ✅ Yes |
-| `python qwen_reasoner.py` | AI reasoning and plan generation | ✅ Yes |
-| `python email_reply.py` | Send approved email replies | ❌ On-demand |
-| `python whatsapp_reply.py` | Send approved WhatsApp replies | ❌ On-demand |
-| `python linkedin_draft.py` | Generate LinkedIn post drafts | ❌ On-demand |
-| `python linkedin_poster.py` | Post approved content to LinkedIn | ❌ On-demand |
-| `python auth_setup.py` | Gmail OAuth setup (one-time) | ❌ One-time |
-| `python whatsapp_setup_qr.py` | WhatsApp QR setup (one-time) | ❌ One-time |
-| `python test_gmail.py` | Test Gmail connection | ❌ One-time |
-| `python test_whatsapp_login.py` | Check WhatsApp login status | ❌ One-time |
-
----
-
-## 🛠️ Troubleshooting Commands
-
-### Gmail Issues
-
+#### **Example 1: Generate Weekly CEO Briefing**
 ```bash
-# Re-authorize Gmail
-python auth_setup.py
+# Run every Sunday at 11 PM via cron
+python ceo_briefing.py Vault 7
 
-# Test connection
-python test_gmail.py
+# View the generated briefing
+type Vault\Briefings\*.md
 ```
 
-### WhatsApp Issues
-
+#### **Example 2: Post to All Social Media**
 ```bash
-# Re-authenticate WhatsApp
-python whatsapp_setup_qr.py
-
-# Check login status
-python test_whatsapp_login.py
-
-# Debug selectors
-python whatsapp_debug.py
+# Create approved posts in Vault/Approved/
+# Then run all posters:
+python twitter_poster.py
+python facebook_poster.py
+python instagram_poster.py --image image.png
+python linkedin_poster.py
 ```
 
-### General Issues
-
+#### **Example 3: Create Invoice for Client**
 ```bash
-# Test vault read/write
-python test_read_write.py
+# Create $1500 invoice for "ABC Corp"
+python odoo_mcp.py --action create_invoice --customer "ABC Corp" --amount 1500
+
+# View created invoice
+type Vault\Accounting\Invoices\INVOICE_*.md
+```
+
+#### **Example 4: Check Gold Tier Status**
+```bash
+# Run compliance check
+python check_gold_compliance.py
+
+# Expected output:
+# Gold #1: PASS
+# Gold #2: PASS
+# ...
+# Gold #11: PASS
+# Score: 11/11 (100%)
 ```
 
 ---

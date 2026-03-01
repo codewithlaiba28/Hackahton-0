@@ -1,8 +1,9 @@
 ## **Personal AI Employee Hackathon 0: Building Autonomous FTEs (Full-Time Equivalent) in 2026**
-
+![alt text](image-1.png)
+![alt text](image-2.png)
 **Tagline:** *Your life and business on autopilot. Local-first, agent-driven, human-in-the-loop.*
 
-This document serves as a comprehensive architectural blueprint and hackathon guide for building a "Digital FTE" (Full-Time Equivalent). It proposes a futuristic, local-first approach to automation where an AI agent—powered by Claude Code and Obsidian—proactively manages personal and business affairs 24/7. You can also think of it as a "Smart Consultant" (General Agents). The focus is on high-level reasoning, autonomy, and flexibility. Think of it as hiring a senior employee who figures out how to solve the problems.
+This document serves as a comprehensive architectural blueprint and hackathon guide for building a "Digital FTE" (Full-Time Equivalent). It proposes a futuristic, local-first approach to automation where an AI agent—powered by Claude Code and Obsidian—proactively manages personal and business affairs 24/7. You can also think of it as a "Smart Consultant" (General Agents). The focus is on high-level reasoning, autonomy, and flexibility. Think of it as hiring a senior employee who figures out how to solve the problems.6fe7ed3f-9001-4854-8897-9ebbc01c45a2     6fe7ed3f-9001-4854-8897-9ebbc01c45a2 
 
 This hackathon takes the concept of a "Personal AI Employee" to its logical extreme. It doesn't just wait for you to type; it proactively manages your "Personal Affairs" (Gmail, WhatsApp, Bank) and your "Business" (Social Media, Payments, Project Tasks) using **Claude Code** as the executor and **Obsidian** as the management dashboard. 
 
